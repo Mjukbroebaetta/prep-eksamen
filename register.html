@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="no">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Registrer bruker</title>
+    <script>
+      function toggleAdminPasswordField() {
+        const authSelect = document.getElementById("auth");
+        const adminPasswordWrapper = document.getElementById("admin-password-wrapper");
+        const adminPasswordInput = document.getElementById("admin_password");
+
+        if (authSelect.value === "ansatt") {
+          adminPasswordWrapper.style.display = "block";
+          adminPasswordInput.required = true;
+        } else {
+          adminPasswordWrapper.style.display = "none";
+          adminPasswordInput.required = false;
+          adminPasswordInput.value = "";
+        }
+      }
+
+      window.addEventListener("DOMContentLoaded", () => {
+        document.getElementById("auth").addEventListener("change", toggleAdminPasswordField);
+        toggleAdminPasswordField();
+      });
+    </script>
+  </head>
+  <body>
+    <div id="header">
+			<h1>Registrer bruker</h1>
+		</div>
+		<div id="menu">
+      
+			
+      {% if logged_in_as != 'n/a' %}
+      <a href="{{ url_for('logout') }}">Logg ut</a> 
+      {% if auth == 1 %}
+      <a href="{{url_for('ansatt')}}">Tilbake til ansatt-side</a>
+      {% endif %}
+      {% endif %}
+      {% else %}
+      <a href="/">Tilbake til login</a>
+      {% endif %}
+		</div>
+    <br>
+    <form action="/register" method="post">
+      <p>Username:</p><br>
+      <input type="text" id="username" name="username" required>
+      <p>Password:</p><br>
+      <input type="password" id="password" name="password" required><br>
+      <p>Rolle:</p>
+      <select name="auth" id="auth">
+        <option value="kunde">Kunde</option>
+        <option value="ansatt">Ansatt</option>
+      </select>
+      <div id="admin-password-wrapper" style="display:none; margin-top: 10px;">
+        <p>Admin-passord:</p>
+        <input type="password" id="admin_password" name="admin_password">
+      </div>
+      <br>
+      <input type="submit" value="Register">
+    </form>
+  </body>
+</html>

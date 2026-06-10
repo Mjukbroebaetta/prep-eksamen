@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="no">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1">
+		<title></title>
+	</head>
+	<body>
+		<script>
+		</script>
+		<div id="header">
+			<h1>Hei, {{ logged_in_as }}!</h1>
+		</div>
+		<div id="menu">
+			<a href="/register">Register ny bruker</a>
+			<a href="{{ url_for('logout') }}">Logg ut</a>
+		</div>
+		<div id="main">
+			<p>Du er logget inn som ansatt.</p>
+		</div>
+	</body>
+</html>
