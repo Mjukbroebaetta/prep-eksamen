@@ -41,7 +41,14 @@ def index():
 
 @app.route("/register", methods=["GET"])
 def register_form():
-    return send_from_directory(BASE_DIR, "register.html")
+    with open(os.path.join(BASE_DIR, "register.html"), "r", encoding="utf-8") as template_file:
+        html = template_file.read()
+
+    return render_template_string(
+        html,
+        logged_in_as=session.get("logged_in_as", "n/a"),
+        auth=session.get("auth", session.get("auth_level", "n/a")),
+    )
 
 
 @app.route("/login", methods=["POST"])
@@ -117,6 +124,34 @@ def register():
         conn.commit()
 
     return "OK", 200
+
+@app.route("/ansatt")
+def ansatt():
+    if session.get("auth_level") not in (1, 2):
+        return redirect(url_for("index"))
+
+    with open(os.path.join(BASE_DIR, "loggedin_employee.html"), "r", encoding="utf-8") as template_file:
+        html = template_file.read()
+
+    return render_template_string(
+        html,
+        logged_in_as=session.get("logged_in_as", "n/a"),
+        auth_level=session.get("auth_level", session.get("auth", "n/a")),
+    )
+
+@app.route("/gjest")
+def gjest():
+    if session.get("auth_level") != 0:
+        return redirect(url_for("index"))
+
+    with open(os.path.join(BASE_DIR, "loggedin_guest.html"), "r", encoding="utf-8") as template_file:
+        html = template_file.read()
+
+    return render_template_string(
+        html,
+        logged_in_as=session.get("logged_in_as", "n/a"),
+        auth_level=session.get("auth_level", session.get("auth", "n/a")),
+    )
 
 #@app.route("/logged_in")
 #def logged_in():

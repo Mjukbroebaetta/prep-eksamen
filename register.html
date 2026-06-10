@@ -34,14 +34,17 @@
       
 			
       {% if logged_in_as != 'n/a' %}
-      <a href="{{ url_for('logout') }}">Logg ut</a> 
-      {% if auth == 1 %}
-      <a href="{{url_for('ansatt')}}">Tilbake til ansatt-side</a>
-      {% endif %}
+      <a href="{{ url_for('logout') }}">Logg ut</a>
+      {% if auth == 1 or auth == 2 %}
+      <a href="{{ url_for('ansatt') }}">Tilbake til ansatt-side</a>
       {% endif %}
       {% else %}
       <a href="/">Tilbake til login</a>
       {% endif %}
+      {% if auth == 0 and logged_in_as != 'n/a' %}
+      <a href="{{ url_for('gjest') }}">Tilbake til gjest-side</a>
+      {% endif %}
+      {{ logged_in_as }}
 		</div>
     <br>
     <form action="/register" method="post">
